@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">SimpleAccountKit</string>
+
+    // if your Facebook App ID is 1234567, you should use ak1234567
+    <string name="ak_login_protocol_scheme">ak506484583056906</string>
+    //FB APP ID
+    <string name="facebook_app_id">506484583056906</string>
+    //FB_CLIENT_ID
+    <string name="account_kit_client_access_token">625ab555c9cd0f2defd6162055a590dc</string>
+    //FB_ANALYTICS_PROTOCOL
+    <string name="fb_login_protocol_scheme">fb184673868754060</string>
+
+
+</resources>
