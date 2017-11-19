@@ -17,6 +17,10 @@ import com.facebook.accountkit.AccountKitError;
 import com.facebook.accountkit.PhoneNumber;
 import com.snape.shivichu.simpleaccountkit.R;
 
+/** Created by Shivichu 0n 19/11/2017
+ *
+ */
+
 public class MainActivity extends AppCompatActivity {
 
     TextView textView;
