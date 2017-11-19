@@ -27,6 +27,8 @@ import com.facebook.accountkit.AccountKitLoginResult;
 import com.facebook.accountkit.ui.AccountKitActivity;
 import com.facebook.accountkit.ui.AccountKitConfiguration;
 import com.facebook.accountkit.ui.LoginType;
+import com.facebook.accountkit.ui.SkinManager;
+import com.facebook.accountkit.ui.UIManager;
 import com.facebook.appevents.AppEventsLogger;
 import com.snape.shivichu.simpleaccountkit.R;
 
@@ -37,7 +39,7 @@ import com.snape.shivichu.simpleaccountkit.R;
 
 public class SelectLoginOPtion extends AppCompatActivity {
 
-    Button bSMS,bEMAIL;
+    Button bSMS, bEMAIL;
     public static final int APP_REQUEST_CODE = 121;
 
     private static final int PERMISSION_CALLBACK_CONSTANT = 100;
@@ -49,6 +51,8 @@ public class SelectLoginOPtion extends AppCompatActivity {
     private SharedPreferences permissionStatus;
     private boolean sentToSettings = false;
 
+    UIManager uiManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +60,7 @@ public class SelectLoginOPtion extends AppCompatActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
         setContentView(R.layout.activity_select_option);
-        
+
         permissionStatus = getSharedPreferences("permissionStatus", MODE_PRIVATE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -71,16 +75,16 @@ public class SelectLoginOPtion extends AppCompatActivity {
         }
 
 
-        bSMS = (Button)findViewById(R.id.btn_sms);
-        bEMAIL = (Button)findViewById(R.id.btn_email);
-    }
+        bSMS = (Button) findViewById(R.id.btn_sms);
+        bEMAIL = (Button) findViewById(R.id.btn_email);
 
+    }
 
 
     private void checkandgrantpermission() {
 
         if (ActivityCompat.checkSelfPermission(SelectLoginOPtion.this, permissionsRequired[0]) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(SelectLoginOPtion.this, permissionsRequired[1]) != PackageManager.PERMISSION_GRANTED ){
+                || ActivityCompat.checkSelfPermission(SelectLoginOPtion.this, permissionsRequired[1]) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(SelectLoginOPtion.this, permissionsRequired[0])
                     || ActivityCompat.shouldShowRequestPermissionRationale(SelectLoginOPtion.this, permissionsRequired[1])) {
                 //Show Information about why you need the permission
@@ -146,7 +150,6 @@ public class SelectLoginOPtion extends AppCompatActivity {
     }
 
 
-
     public void phoneLogin(final View view) {
 
         final Intent intent = new Intent(getApplicationContext(), AccountKitActivity.class);
@@ -155,9 +158,14 @@ public class SelectLoginOPtion extends AppCompatActivity {
                         LoginType.PHONE,
                         AccountKitActivity.ResponseType.CODE); // or .ResponseType.TOKEN
         // ... perform additional configuration ...
+        uiManager = new SkinManager(SkinManager.Skin.CONTEMPORARY,
+                getResources().getColor(R.color.colorPrimary), R.drawable.abc,
+                SkinManager.Tint.WHITE, 1.3);
+        configurationBuilder.setUIManager(uiManager);
         intent.putExtra(
                 AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION,
                 configurationBuilder.build());
+
         startActivityForResult(intent, APP_REQUEST_CODE);
     }
 
@@ -169,6 +177,10 @@ public class SelectLoginOPtion extends AppCompatActivity {
                         LoginType.EMAIL,
                         AccountKitActivity.ResponseType.CODE); // or .ResponseType.TOKEN
         // ... perform additional configuration ...
+        uiManager = new SkinManager(SkinManager.Skin.CONTEMPORARY,
+                getResources().getColor(R.color.colorPrimary), R.drawable.abc,
+                SkinManager.Tint.WHITE, 1.3);
+        configurationBuilder.setUIManager(uiManager);
         intent.putExtra(
                 AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION,
                 configurationBuilder.build());
@@ -193,7 +205,7 @@ public class SelectLoginOPtion extends AppCompatActivity {
                 } else {
                     toastMessage = String.format(
                             "Success:%s...",
-                            loginResult.getAuthorizationCode().substring(0,10));
+                            loginResult.getAuthorizationCode().substring(0, 10));
                 }
 
                 // If you have an authorization code, retrieve it from
@@ -207,10 +219,7 @@ public class SelectLoginOPtion extends AppCompatActivity {
             // Surface the result to your user in an appropriate way.
             Toast.makeText(
                     this, toastMessage, Toast.LENGTH_LONG).show();
-        }
-
-        else if(requestCode == REQUEST_PERMISSION_SETTING)
-        {
+        } else if (requestCode == REQUEST_PERMISSION_SETTING) {
 
             if (ActivityCompat.checkSelfPermission(SelectLoginOPtion.this, permissionsRequired[0]) == PackageManager.PERMISSION_GRANTED) {
                 //Got Permission
@@ -221,7 +230,7 @@ public class SelectLoginOPtion extends AppCompatActivity {
     }
 
     private void proceedAfterPermission() {
-        Log.d("*********","Got All Permissions");
+        Log.d("*********", "Got All Permissions");
 //        txtPermissions.setText("We've got all permissions");
 //        Toast.makeText(getBaseContext(), "We got All Permissions", Toast.LENGTH_LONG).show();
     }
@@ -242,7 +251,6 @@ public class SelectLoginOPtion extends AppCompatActivity {
         alertDialog.setCancelable(true);
         alertDialog.show();
     }
-
 
 
     @Override
